@@ -18,13 +18,24 @@ public class CharacterCreator extends Observable  implements Serializable{
     public enum Race {
         HUMAN, ELF, ORC, DWARF;
 
-        public static String[] names() {
-            java.util.LinkedList<String> list = new LinkedList<String>();
-            for (Race r : Race.values()) {
+        private static Race[] vals = values();
+
+        public static String[] getNames() {
+            LinkedList<String> list = new LinkedList<>();
+            for (Race r : vals) {
                 list.add(r.name().substring(0, 1) + r.name().substring(1).toLowerCase());
             }
-
             return list.toArray(new String[list.size()]);
+        }
+
+        public static Race getLast()
+        {
+            return vals[vals.length - 1];
+        }
+
+        public static Race getFirst()
+        {
+            return vals[0];
         }
     }
 
@@ -90,14 +101,11 @@ public class CharacterCreator extends Observable  implements Serializable{
         *    Строка должна быть формата - первая буква заглавная, остальные строчные
         *   One, Two, Three
         * */
-        //Log.i("HHHHH", Arrays.toString(Race.values()));
-        //Log.i("HHHHH", Arrays.toString(Race.names()));
-        //return new String[]{"HUMAN", "ELF", "ORC", "DWARF"};
-        return Race.names();
+        //return new String[]{""};
+        return Race.getNames();
     }
 
     public void setRace(int position) {
-        // TODO: 11.12.2017
         /*
         *  этот метод задает специализацию в переменную mRace
         *  на вход подается число, и из enum Race выбирается соответствующая раса
@@ -109,6 +117,19 @@ public class CharacterCreator extends Observable  implements Serializable{
         *  если введенное число больше длины enum, то в mRace записывается самое последнее (длина - 1) значение
         *
         * */
+        if (position < 0) {
+            mRace = Race.getFirst();
+        } else if (position > Race.vals.length - 1) {
+            mRace = Race.getLast();
+        } else {
+            for (Race race: Race.vals) {
+                if (race.ordinal() == position) {
+                    mRace = race;
+                }
+            }
+        }
+
+        //Log.i("HHHHH", create().toString());
     }
 
     public String[] getAttributes() {

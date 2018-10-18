@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements CreateCharacterFr
     public void onCreateCharacterStarted() {
         CreateCharacterFragment fragment = (CreateCharacterFragment) getSupportFragmentManager().findFragmentById(R.id.container);
         fragment.configureCreator(mCreator);
-        Log.i("HHHHH", mCreator.create().toString());
+        //Log.i("HHHHH", mCreator.create().toString());
 
     }
 
