@@ -102,10 +102,10 @@ public class CreateCharacterFragment extends Fragment implements Observer {
 
     private void addRaces() {
         // TODO: 11.12.2017 раскоментируйте это после того, как доделаете логику CharacterCreator.getRases()
-//        String[] races = mCreator.getRaces();
-//        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, races);
+        String[] races = mCreator.getRaces();
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, races);
 //
-//        mRacesSpinner.setAdapter(spinnerAdapter);
+        mRacesSpinner.setAdapter(spinnerAdapter);
 //        mRacesSpinner.setSelection(mCreator.getRacePosition());
 //        mRacesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity implements CreateCharacterFragment.Callback {
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements CreateCharacterFr
     public void onCreateCharacterStarted() {
         CreateCharacterFragment fragment = (CreateCharacterFragment) getSupportFragmentManager().findFragmentById(R.id.container);
         fragment.configureCreator(mCreator);
+        Log.i("HHHHH", mCreator.create().toString());
+
     }
 
     @Override

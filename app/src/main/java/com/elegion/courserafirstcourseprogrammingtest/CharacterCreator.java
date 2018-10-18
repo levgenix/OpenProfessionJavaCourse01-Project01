@@ -1,7 +1,11 @@
 package com.elegion.courserafirstcourseprogrammingtest;
 
+import android.util.Log;
+
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Observable;
 
@@ -12,7 +16,16 @@ public class CharacterCreator extends Observable  implements Serializable{
     }
 
     public enum Race {
-        HUMAN, ELF, ORC, DWARF
+        HUMAN, ELF, ORC, DWARF;
+
+        public static String[] names() {
+            java.util.LinkedList<String> list = new LinkedList<String>();
+            for (Race r : Race.values()) {
+                list.add(r.name().substring(0, 1) + r.name().substring(1).toLowerCase());
+            }
+
+            return list.toArray(new String[list.size()]);
+        }
     }
 
     public enum Attribute {
@@ -77,8 +90,10 @@ public class CharacterCreator extends Observable  implements Serializable{
         *    Строка должна быть формата - первая буква заглавная, остальные строчные
         *   One, Two, Three
         * */
-
-        return new String[]{""};
+        //Log.i("HHHHH", Arrays.toString(Race.values()));
+        //Log.i("HHHHH", Arrays.toString(Race.names()));
+        //return new String[]{"HUMAN", "ELF", "ORC", "DWARF"};
+        return Race.names();
     }
 
     public void setRace(int position) {
