@@ -2,8 +2,9 @@ package com.elegion.courserafirstcourseprogrammingtest;
 
 import android.util.Log;
 
+import org.w3c.dom.Attr;
+
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -12,7 +13,27 @@ import java.util.Observable;
 public class CharacterCreator extends Observable  implements Serializable{
 
     public enum Specialization {
-        WARRIOR, ARCHER, MAGE
+        WARRIOR, ARCHER, MAGE;
+
+        private static Specialization[] vals = values();
+
+        public static String[] getNames() {
+            LinkedList<String> list = new LinkedList<>();
+            for (Specialization s : vals) {
+                list.add(s.name().substring(0, 1) + s.name().substring(1).toLowerCase());
+            }
+            return list.toArray(new String[list.size()]);
+        }
+
+        public static Specialization getLast()
+        {
+            return vals[vals.length - 1];
+        }
+
+        public static Specialization getFirst()
+        {
+            return vals[0];
+        }
     }
 
     public enum Race {
@@ -40,11 +61,40 @@ public class CharacterCreator extends Observable  implements Serializable{
     }
 
     public enum Attribute {
-        STRENGTH, AGILITY, INTELLECT, STAMINA, LUCK
+        STRENGTH, AGILITY, INTELLECT, STAMINA, LUCK;
+
+        private static Attribute[] vals = values();
+
+        public static String[] getNames() {
+            LinkedList<String> list = new LinkedList<>();
+            for (Attribute a : vals) {
+                list.add(a.name().substring(0, 1) + a.name().substring(1).toLowerCase());
+            }
+            return list.toArray(new String[list.size()]);
+        }
+
+        public static Attribute getByPosition(int position) {
+            int i = 0;
+            for (Attribute a : vals) {
+                if (i == position) {
+                    return a;
+                }
+                i++;
+            }
+            return null;
+        }
     }
 
     public enum Perk {
-        BERSERK, CALM, LIGHTWEIGHT, HEAVYARMORED, OBSERVANT, MEDITATIONS
+        BERSERK, CALM, LIGHTWEIGHT, HEAVYARMORED, OBSERVANT, MEDITATIONS;
+
+        public static String[] getNames() {
+            LinkedList<String> list = new LinkedList<>();
+            for (Perk p : values()) {
+                list.add(p.name().substring(0, 1) + p.name().substring(1).toLowerCase());
+            }
+            return list.toArray(new String[list.size()]);
+        }
     }
 
     private String mName;
@@ -69,18 +119,16 @@ public class CharacterCreator extends Observable  implements Serializable{
 
 
     public String[] getSpecializations() {
-        // TODO: 11.12.2017
         /*
         *   этот метод должен возвращать массив строк, созданных на основе enum Specialization
         *   Строки должны начинаться с заглавной буквы, остальные строчные
         * */
 
-        return new String[]{""};
-
+        //return new String[]{""};
+        return Specialization.getNames();
     }
 
     public void setSpecialization(int position) {
-        // TODO: 11.12.2017
         /*
         *  этот метод задает специализацию в переменную mSpecialization
         *  на вход подается число, и из enum Specialization выбирается соответствующий класс
@@ -91,11 +139,20 @@ public class CharacterCreator extends Observable  implements Serializable{
         *  если введенное число больше длины enum, то в mSpecialization записывается самое последнее (длина - 1) значение
         *
         * */
-
+        if (position < 0) {
+            mSpecialization = Specialization.getFirst();
+        } else if (position > Specialization.vals.length - 1) {
+            mSpecialization = Specialization.getLast();
+        } else {
+            for (Specialization spec: Specialization.vals) {
+                if (spec.ordinal() == position) {
+                    mSpecialization = spec;
+                }
+            }
+        }
     }
 
     public String[] getRaces() {
-        // TODO: 11.12.2017
         /*
         *   этот метод должен возвращать массив строк, созданных на основе enum Races
         *    Строка должна быть формата - первая буква заглавная, остальные строчные
@@ -128,34 +185,28 @@ public class CharacterCreator extends Observable  implements Serializable{
                 }
             }
         }
-
-        //Log.i("HHHHH", create().toString());
     }
 
     public String[] getAttributes() {
-
-        // TODO: 11.12.2017
         /*
         *   этот метод должен возвращать массив строк, созданных на основе enum Attribute
         *    Строка должна быть формата - первая буква заглавная, остальные строчные
         *   One, Two, Three
         * */
-        return new String[]{""};
-
+        //return new String[]{""};
+        return Attribute.getNames();
     }
 
     public String[] getPerks() {
-        // TODO: 11.12.2017
         /*
         *   этот метод должен возвращать массив строк, созданных на основе enum Perk
         *   Строка должна быть формата - первая буква заглавная, остальные строчные
         *   One, Two, Three
         *
         * */
-
-        return new String[]{""};
-
+        return Perk.getNames();
     }
+
     public void updateAttributeValue(int position, int updateTo) {
         // TODO: 11.12.2017
         /*
@@ -193,6 +244,19 @@ public class CharacterCreator extends Observable  implements Serializable{
         *       то мы не можем увеличить атрибут, ничего не происходит        *
         * */
 
+        // Нет доступных очков для увеличения атрибута
+        if (mAvailablePoints - updateTo < 0) {
+            // TODO Выбросить Toast
+            return;
+        }
+
+        Integer arrtibuteValue = getAttributesMap().get(Attribute.getByPosition(position).name());
+        Log.i("HHHH", Attribute.getByPosition(position).toString());
+        Log.i("HHHH", arrtibuteValue.toString());
+
+
+        //String[] params = mCreator.getAttributes();
+        //String.valueOf(mCreator.getAttributesMap().get(params[i].toUpperCase()));
     }
 
     public void setName(String name) {
@@ -219,6 +283,10 @@ public class CharacterCreator extends Observable  implements Serializable{
         character.setAttributes(mAttributesMap);
         character.setPerks(mPerksMap);
         character.calculateParameters();
+
+        // TODO ХЗ где метод вызывается
+        Log.i("HHHH", "jugjugjghh");
+
         return character;
     }
 
