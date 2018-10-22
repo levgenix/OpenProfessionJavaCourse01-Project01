@@ -1,9 +1,5 @@
 package com.elegion.courserafirstcourseprogrammingtest;
 
-import android.util.Log;
-
-import org.w3c.dom.Attr;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -208,7 +204,7 @@ public class CharacterCreator extends Observable  implements Serializable{
     }
 
     public void updateAttributeValue(int position, int updateTo) {
-        // TODO: 11.12.2017
+        // 11.12.2017
         /*
         *  этот метод увеличивает/уменьшает соответствующее значение атрибута
         *  рекомендуется реализовывать его в последнюю очередь
@@ -246,17 +242,19 @@ public class CharacterCreator extends Observable  implements Serializable{
 
         // Нет доступных очков для увеличения атрибута
         if (mAvailablePoints - updateTo < 0) {
-            // TODO Выбросить Toast
+            // TODO Выбросить исключение
             return;
         }
 
-        Integer arrtibuteValue = getAttributesMap().get(Attribute.getByPosition(position).name());
-        Log.i("HHHH", Attribute.getByPosition(position).toString());
-        Log.i("HHHH", arrtibuteValue.toString());
+        Integer attributeValue = getAttributesMap().get(Attribute.getByPosition(position).name());
+        // Атрибут не может быть менее 1
+        if (attributeValue + updateTo < 1) {
+            // TODO Выбросить исключение
+            return;
+        }
 
-
-        //String[] params = mCreator.getAttributes();
-        //String.valueOf(mCreator.getAttributesMap().get(params[i].toUpperCase()));
+        mAttributesMap.put(Attribute.getByPosition(position).name(), attributeValue + updateTo);
+        setAvailablePoints(mAvailablePoints - updateTo);
     }
 
     public void setName(String name) {
@@ -283,10 +281,6 @@ public class CharacterCreator extends Observable  implements Serializable{
         character.setAttributes(mAttributesMap);
         character.setPerks(mPerksMap);
         character.calculateParameters();
-
-        // TODO ХЗ где метод вызывается
-        Log.i("HHHH", "jugjugjghh");
-
         return character;
     }
 

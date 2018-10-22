@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -170,7 +169,7 @@ public class CreateCharacterFragment extends Fragment implements Observer {
             mParamsContainer.addView(paramsRow);
         }
 
-        // TODO: 11.12.2017  раскоментируйте это после того, как доделаете логику CharacterCreator.updateAttributeValue();
+        // 11.12.2017  раскоментируйте это после того, как доделаете логику CharacterCreator.updateAttributeValue();
 
         for (int i = 0, size = mParamControlButtons.length; i < size; i++) {
             int rowCount = size / 2;
@@ -181,6 +180,8 @@ public class CreateCharacterFragment extends Fragment implements Observer {
                 @Override
                 public void onClick(View v) {
                     mCreator.updateAttributeValue(row, action);
+                    // TODO см. после изменения нужно вызвать методы setChanged(); notifyObservers();
+                    update(mCreator, null);
                 }
             });
         }
@@ -213,24 +214,24 @@ public class CreateCharacterFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        // TODO: 09.01.2018 раскоментируйте для обновления экрана
-//        if (o instanceof CharacterCreator) {
-//            mAvailablePoints.setText(mCreator.getAvailablePoints());
-//
-//            Map<String, Integer> attributesMap = mCreator.getAttributesMap();
-//            for (TextView view : mParamValues) {
-//                String key = ((String) view.getTag()).toUpperCase();
-//                String value = String.valueOf(attributesMap.get(key));
-//                view.setText(value);
-//            }
-//
-//            Map<String, Boolean> perksMap = mCreator.getPerksMap();
-//            Set<String> tags = perksMap.keySet();
-//            for (String tag : tags) {
-//                CheckBox checkBox = mPerksContainer.findViewWithTag(tag);
-//                checkBox.setChecked(perksMap.get(tag));
-//            }
-//        }
+        // 09.01.2018 раскоментируйте для обновления экрана
+        if (o instanceof CharacterCreator) {
+            mAvailablePoints.setText(mCreator.getAvailablePoints());
+
+            Map<String, Integer> attributesMap = mCreator.getAttributesMap();
+            for (TextView view : mParamValues) {
+                String key = ((String) view.getTag()).toUpperCase();
+                String value = String.valueOf(attributesMap.get(key));
+                view.setText(value);
+            }
+
+            Map<String, Boolean> perksMap = mCreator.getPerksMap();
+            Set<String> tags = perksMap.keySet();
+            for (String tag : tags) {
+                CheckBox checkBox = mPerksContainer.findViewWithTag(tag);
+                checkBox.setChecked(perksMap.get(tag));
+            }
+        }
     }
 
     @Override
